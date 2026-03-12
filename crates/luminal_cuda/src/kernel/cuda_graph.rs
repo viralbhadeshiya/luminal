@@ -368,7 +368,7 @@ pub fn event_elapsed_ms(
     ctx.bind_to_thread()?;
     let mut ms: f32 = 0.0;
     unsafe {
-        sys::cuEventElapsedTime(&mut ms, start, end).result()?;
+        sys::cuEventElapsedTime_v2(&mut ms, start, end).result()?;
     }
     Ok(ms)
 }
