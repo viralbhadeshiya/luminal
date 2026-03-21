@@ -146,7 +146,7 @@ pub fn combine_safetensors_to_fp32(
         header_map.insert(name.clone(), serde_json::json!({
             "dtype": "F32",
             "shape": meta.shape,
-            "data_offset": [start, end]
+            "data_offsets": [start, end]
         }));
     }
 
