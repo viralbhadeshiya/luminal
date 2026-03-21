@@ -1,7 +1,9 @@
 mod hf;
+mod hf_stream;
 mod model;
 
 use hf::prepare_hf_model;
+use hf_stream::prepare_hf_model_stream;
 use luminal::prelude::*;
 use luminal_cuda::{cudarc::driver::CudaContext, runtime::CudaRuntime};
 use luminal_tracing::*;
@@ -38,7 +40,7 @@ fn main() {
     let stream = ctx.default_stream();
 
     // Download model if needed and prepare weights (converts to FP32)
-    let model_dir = prepare_hf_model(REPO_ID).expect("Failed to prepare model");
+    let model_dir = prepare_hf_model_stream(REPO_ID).expect("Failed to prepare model");
     println!("Using model directory: {}", model_dir.display());
 
     // Tokenize prompt with Llama 3 Instruct chat template
