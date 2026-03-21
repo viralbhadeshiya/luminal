@@ -13,12 +13,20 @@ use luminal_nn::LayerNorm;
 use std::{fmt::Debug, sync::Arc};
 
 // Llama 3 8B hyperparams
-pub const LAYERS: usize = 32;
-pub const HIDDEN: usize = 4096;
-pub const INTERMEDIATE: usize = 14336;
-pub const HEAD_DIM: usize = 128;
-pub const KV_GROUPS: usize = 4;
-pub const VOCAB_SIZE: usize = 128256;
+// pub const LAYERS: usize = 32;
+// pub const HIDDEN: usize = 4096;
+// pub const INTERMEDIATE: usize = 14336;
+// pub const HEAD_DIM: usize = 128;
+// pub const KV_GROUPS: usize = 4;
+// pub const VOCAB_SIZE: usize = 128256;
+
+// TO (Llama 3.2 1B):
+pub const LAYERS: usize = 16;
+pub const HIDDEN: usize = 2048;
+pub const INTERMEDIATE: usize = 8192;
+pub const HEAD_DIM: usize = 64;
+pub const KV_GROUPS: usize = 4;   // 32 heads / 8 kv_heads = 4, same
+pub const VOCAB_SIZE: usize = 128256; // same
 
 pub struct Llama {
     embedding: GraphTensor,
@@ -100,16 +108,24 @@ impl Llama {
             });
         }
         let lm_norm = LayerNorm::new(HIDDEN, Some("model.norm.weight"), None, false, 1e-5, cx);
-        let lm_head = cx
-            .named_tensor("lm_head.weight", (VOCAB_SIZE, HIDDEN))
-            .persist();
-        let embedding = cx
-            .named_tensor("model.embed_tokens.weight", (VOCAB_SIZE, HIDDEN))
-            .persist();
+        // let lm_head = cx
+        //     .named_tensor("lm_head.weight", (VOCAB_SIZE, HIDDEN))
+        //     .persist();
+        // let embedding = cx
+        //     .named_tensor("model.embed_tokens.weight", (VOCAB_SIZE, HIDDEN))
+        //     .persist();
+        // Self {
+        //     embedding,
+        //     layers: w,
+        //     lm_head,
+        //     lm_norm,
+        // }
+
+        let embedding = cx.named_tensor("model.embed_tokens.weight", (VOCAB_SIZE, HIDDEN)).persist();
         Self {
             embedding,
             layers: w,
-            lm_head,
+            lm_head: embedding,
             lm_norm,
         }
     }

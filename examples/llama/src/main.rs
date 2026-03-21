@@ -14,7 +14,7 @@ use tokenizers::Tokenizer;
 use tracing::{span, Level};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-const REPO_ID: &str = "NousResearch/Meta-Llama-3-8B-Instruct";
+const REPO_ID: &str = "NousResearch/Llama-3.2-1B";
 
 // This example compiles and runs Llama 3 8B on CUDA. On an H100, this should hit >75% MBU
 
