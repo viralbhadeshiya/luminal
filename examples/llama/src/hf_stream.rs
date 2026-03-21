@@ -172,7 +172,7 @@ pub fn combine_safetensors_to_fp32(
         let mmap = unsafe { MmapOptions::new().map(&file)?};
         let st = SafeTensors::deserialize(&mmap)?;
 
-        let mut shard_tensors: Vec<&str> = st.names().iter().collect();
+        let mut shard_tensors: Vec<&str> = st.names().into_iter().collect();
         shard_tensors.sort_by_key(|name| tensor_metas[*name].data_offset);
 
         for name in shard_tensors {
