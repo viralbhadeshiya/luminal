@@ -1,6 +1,5 @@
 use half::{bf16, f16};
 use hf_hub::api::sync::Api;
-use luminal::prelude::anyhow::Ok;
 use memmap2::MmapOptions;
 use safetensors::{tensor::TensorView, Dtype, SafeTensors};
 use serde::Deserialize;
@@ -77,7 +76,7 @@ fn resolve_shard_files(model_dir: &Path) -> Result<Vec<PathBuf>, Box<dyn std::er
 
     if single.exists() && !index_path.exists() {
         println!("Single shard model detected, converting to FP32...");
-        return Ok(Vec![single]);
+        return Ok(vec![single]);
     }
 
     let index_content = std::fs::read_to_string(&index_path)?;
